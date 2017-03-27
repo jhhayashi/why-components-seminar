@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -31,9 +32,9 @@ export default class Chat extends React.Component {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.chats}>
+        <ScrollView style={styles.chats}>
           {this.props.chats.map(x => <Message key={x.id} {...x} />)}
-        </View>
+        </ScrollView>
 
         <TextInput
           ref={'input'}
