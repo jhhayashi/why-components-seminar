@@ -1,23 +1,50 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+
+import Chat from './screens/Chat';
+import Login from './screens/Login';
 
 export default class App extends React.Component {
-  render() {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      username: '',
+      chats: [],
+    };
+  }
+
+  _sendMessage(message) {
+    this.setState({
+      chats: [...this.state.chats, {
+        id: this.state.chats.length,
+        username: this.state.username,
+        text: message,
+      }]
+    });
+  }
+
+  _renderLogin() {
     return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
+      <Login
+        register={ username => this.setState({ username }) }
+      />
     );
   }
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  _renderChat() {
+    return (
+      <Chat
+        username={this.state.username}
+        chats={this.state.chats}
+        sendMessage={this._sendMessage.bind(this)}
+        logout={() => this.setState({ username: '' })}
+      />
+    );
+  }
+
+  render() {
+    // show login page if not registered (no username)
+    if (!this.state.username) return this._renderLogin();
+    else return this._renderChat();
+  }
+}
