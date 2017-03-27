@@ -2,6 +2,9 @@ import React from 'react';
 
 import Chat from './screens/Chat';
 import Login from './screens/Login';
+import { getChats, postChat, } from './api/api';
+
+const POLL_INTERVAL = 500;
 
 export default class App extends React.Component {
   constructor(props) {
@@ -13,13 +16,21 @@ export default class App extends React.Component {
     };
   }
 
+  componentWillMount() {
+    this.interval = setInterval(() => {
+      getChats().then(chats => this.setState({ chats }))
+    }, POLL_INTERVAL)
+  }
+
+  componentWillUnmount() {
+    this.interval && clearInterval(this.interval);
+  }
+
+
   _sendMessage(message) {
-    this.setState({
-      chats: [...this.state.chats, {
-        id: this.state.chats.length,
-        username: this.state.username,
-        text: message,
-      }]
+    postChat({
+      username: this.state.username,
+      text: message,
     });
   }
 

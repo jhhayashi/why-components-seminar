@@ -31,6 +31,13 @@ app.post('/*', function(req, res, next) {
     });
 });
 
+// 404
+app.use(function(req, res, next) {
+  var err = new Error('Not found');
+  err.status = 404;
+  return next(err);
+});
+
 // error handler
 app.use(function(err, req, res, next) {
     return res.status(err.status || 500).send(err.message || '');
