@@ -159,7 +159,8 @@ modify the `render()` function in `App.js` so that it looks like this:
   }
 ```
 
-Look at how simple that is! Now we need to write the `_renderChat()` function:
+Look at how nice and succinct our `render()` function is! Now we need to write
+the `_renderChat()` function:
 
 ```javascript
   _renderChat() {
@@ -181,16 +182,37 @@ push a value to the array in `state` (using the
 ```javascript
   _sendMessage(message) {
     this.setState({
-      chats: [...this.state.chats, {
-        id: this.state.chats.length,
-        username: this.state.username,
-        text: message,
-      }]
+      chats: [
+        ...this.state.chats,
+        {
+          id: this.state.chats.length,
+          username: this.state.username,
+          text: message,
+        },
+      ]
     });
   }
 ```
 
-Now everything should work! But the design needs some work...
+Now everything should work!
+
+### Quick recap
+Alright, let's do a quick overview of everything our app does so far.
+
+- The `state` object in `App.js` is initialized with a blank username and empty
+chats
+- The user is redirected to our `<Login/>` screen as long as the username is
+empty
+- The `<Login/>` screen is passed a function (via its props) called `register`,
+which updates the `App.js` state to its argument
+- Once a user is "logged in" (has a username), they are redirected to the
+`<Chat/>` screen
+- The `<Chat/>` screen has as `sendMessage` function that updates the `App.js`
+state, pushing a new object to the `chats` array
+- The `<Chat/>` screen is also passed a prop called `logout`, which is a function
+that logs out the user by updating the `App.js` state with an empty username
+
+Everything functions, but the design could use some work...
 
 ### Creating a Message component
 So far, we've created a couple of components (`Login` and `Chat`) that function
@@ -261,13 +283,14 @@ array of chats. Follow the instructions in the backend's README to start the
 backend server (it runs on port 8080 by default, but feel free too change the
 port in [server.js](../server/server.js)).
 
-In order to get our app to talk to our backend, we'll need to use some HTTP
-calls with
+In order to get our app to communicate with our backend, we'll need to use some
+HTTP calls with
 [`fetch()`](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch).
 We could add these functions to `App.js`, but it would be better to abstract
 them out into a separate `api` folder. So go ahead and create this directory as
 well as a file called `api.js`. Use [my implementation](./api/api.js), or feel
-free to write your own.
+free to write your own. If you choose to use mine, you'll also need a [Config
+file](./constants/Config.js) at `/constants/Config.js`.
 
 Import our api calls into `App.js` with `import { getChats, postChat, } from
 './api/api';`, then we can use them to communicate between our app and the
@@ -293,7 +316,7 @@ We can declare our poll interval at the top of `App.js` with a line that reads
 `const POLL_INTERVAL = 500;`. I used an interval of a half-second, but feel free
 to use any value you want.
 
-Then i `App.js`, create a new function called `componentWillMount()` defined as:
+Then in `App.js`, create a new function called `componentWillMount()` defined as:
 
 ```javascript
   componentWillMount() {
@@ -318,6 +341,26 @@ can clear the interval in `componentWillUnmount()` once the component unmounts:
 And now we're finished! Congrats on writing your first full app!
 
 ## Wrapping Up
+To wrap up, here's what our app does:
+
+- The `state` object in `App.js` is initialized with a blank username and empty
+chats
+- The user is redirected to our `<Login/>` screen as long as the username is
+empty
+- The `<Login/>` screen is passed a function (via its props) called `register`,
+which updates the `App.js` state to its argument
+- Once a user is "logged in" (has a username), they are redirected to the
+`<Chat/>` screen
+- The `<Chat/>` screen has as `sendMessage` function that updates the `App.js`
+state, pushing a new object to the `chats` array
+- The `<Chat/>` screen is also passed a prop called `logout`, which is a function
+that logs out the user by updating the `App.js` state with an empty username
+- We fetch a new `chats` array every `POLL_INTERVAL` milliseconds
+- Every time the `chats` array in `<Chat/>` is updated, we `map()` through the
+values and create a `<Message/>` for each message
+- When the user sends a message, we use our `postMessage()` API call to send it
+to the backend
+
 Hopefully this seminar/repo has helped you understand abstractions and why we
 component libraries like React are so popular.
 
