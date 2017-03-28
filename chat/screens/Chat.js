@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
   Text,
@@ -19,11 +20,12 @@ export default class Chat extends React.Component {
   _sendMessage() {
     this.props.sendMessage(this.state.message);
     this.refs.input.clear();
+    this.setState({ message: '' });
   }
 
   render() {
     return (
-      <View style={styles.wrap}>
+      <KeyboardAvoidingView behavior={'padding'} style={styles.wrap}>
         <View style={styles.statusBar}/>
         <View style={styles.navbar}>
           <Text>{`Hi, ${this.props.username}!`}</Text>
@@ -43,7 +45,7 @@ export default class Chat extends React.Component {
           onSubmitEditing={this._sendMessage.bind(this)}
           blurOnSubmit={true}
         />
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }

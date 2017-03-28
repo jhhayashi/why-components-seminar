@@ -194,7 +194,14 @@ push a value to the array in `state` (using the
   }
 ```
 
-Now everything should work!
+Now everything should function! But did you spot the bug? Users will probably be
+frustrated if their keyboard covers their textbox. Fortunately, Facebook
+provides
+[a component](https://facebook.github.io/react-native/docs/keyboardavoidingview.html)
+to fix this. In `screens/Chat.js`, replace the outer `<View>` with
+`<KeyboardAvoidingView behavior={'padding'} style={styles.wrap}>`. Don't forget
+to replace the last `</View>` with `</KeyboardAvoidingView>` and to add
+`KeyboardAvoidingView` to the list of `import`s at the top.
 
 ### Quick recap
 Alright, let's do a quick overview of everything our app does so far.

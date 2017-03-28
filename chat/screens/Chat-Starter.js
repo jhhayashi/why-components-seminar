@@ -24,6 +24,7 @@ export default class Chat extends React.Component {
   _sendMessage() {
     this.props.sendMessage(this.state.message);
     this.refs.input.clear();
+    this.setState({ message: '' });
   }
 
   render() {
