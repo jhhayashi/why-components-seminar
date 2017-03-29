@@ -17,7 +17,7 @@ barrier](http://www.ccs.neu.edu/course/cs5500f14/Notes/Testing1/abstractionBarri
 See also [black box mindset](https://en.wikipedia.org/wiki/Black-box_testing).
 
 ## When to use abstractions?
-*Whereever it makes sense.*
+*Wherever it makes sense.*
 
 **What?**
 
@@ -66,7 +66,7 @@ export const getUsers = () =>
 
 // register user
 export const registerUser = user =>
-  fetch(`${API_URL}/users`)
+  fetch(`${API_URL}/users`, {
     headers: { 'Content-Type': 'application/json' },
     method: 'POST',
     body: JSON.stringify(user),
